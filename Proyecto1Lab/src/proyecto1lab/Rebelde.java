@@ -12,7 +12,11 @@ public class Rebelde extends Pieza{
     
     @Override
     public void mover() {
+        int izquierda;
         
+        while (true) {
+            
+        }
     }
 
     @Override

@@ -12,8 +12,30 @@ public class Proyecto1Lab {
 
     static Pieza[][] tabla = new Pieza[19][19];
 
+    static Pieza[][] debug = new Pieza[2][6];
+
     public static void main(String[] args) {
-        juego();
+        juegodebug();
+    }
+
+    public static void juegodebug() {
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (i == 0 && (j == 0 || j == 2 || j == 4)) {
+                    debug[i][j] = new Rebelde(i, j);
+                } else if (i == 1 && (j == 1 || j == 3 || j == 5)) {
+                    if (j == 3) {
+                        debug[i][j] = new Rey(i, j);
+                    } else {
+                        debug[i][j] = new Duque(i, j);
+                    }
+                }
+            }
+        }
+        jugador1 = "1";
+        jugador2 = "2";
+        imprimir();
+        turno(jugador2);
     }
 
     public static void juego() {
@@ -22,11 +44,45 @@ public class Proyecto1Lab {
         System.out.print("Ingrese el nommbre del jugador que controlara a los rebeldes: ");
         jugador2 = sc.next();
         llenar();
+        imprimir();
         turno(jugador2);
     }
 
     public static void turno(String jugador) {
-        imprimir();
+        System.out.println("Es tu turno " + jugador + ".");
+        System.out.print("Ingrese la cordenada x: ");
+        int x = sc.nextInt() - 1;
+        System.out.print("Ingrese la cordenada y: ");
+        int y = sc.nextInt() - 1;
+        while ((x < 0 || x > 18) || (y < 0 || y > 18)) {
+            if (x < 0 || x > 18) {
+                System.out.print("Ingrese una cordenada x valida: ");
+                x = sc.nextInt() - 1;
+            }
+            if (y < 0 || y > 18) {
+                System.out.print("Ingrese una cordenada y valida: ");
+                y = sc.nextInt() - 1;
+            }
+        }
+        if (jugador1.equals(jugador)) {
+            if (debug[y][x] instanceof Duque) {
+                debug[y][x].mover();
+            } else if (debug[y][x] instanceof Rey) {
+                debug[y][x].mover();
+            } else {
+                System.out.println("Esta pieza no te pertenece");
+                turno(jugador);
+            }
+            jugador = jugador2;
+        } else {
+            if (debug[y][x] instanceof Duque) {
+            debug[y][x].mover();
+            jugador = jugador1;
+            }
+        }
+        if (!ganar()) {
+            turno(jugador);
+        }
     }
 
     public static void llenar() {
@@ -85,26 +141,26 @@ public class Proyecto1Lab {
 
     public static void imprimir() {
         System.out.print("   ");
-        for (int i = 0; i < 19; i++) {
-            if (i < 10) {
-                System.out.print(" " + i + "  ");
+        for (int i = 0; i < debug[0].length; i++) {
+            if ((i + 1) < 10) {
+                System.out.print(" " + (i + 1) + "  ");
             } else {
-                System.out.print(i + "  ");
+                System.out.print((i + 1) + "  ");
             }
         }
         System.out.println("");
-        for (int i = 0; i < tabla.length; i++) {
-            if (i < 10) {
-                System.out.print(i + "  ");
+        for (int i = 0; i < debug.length; i++) {
+            if ((i + 1) < 10) {
+                System.out.print((i + 1) + "  ");
             } else {
-                System.out.print(i + " ");
+                System.out.print((i + 1) + " ");
             }
-            for (int j = 0; j < tabla[i].length; j++) {
-                if (tabla[i][j] instanceof Rebelde) {
+            for (int j = 0; j < debug[i].length; j++) {
+                if (debug[i][j] instanceof Rebelde) {
                     System.out.print("[r] ");
-                } else if (tabla[i][j] instanceof Rey) {
+                } else if (debug[i][j] instanceof Rey) {
                     System.out.print("[R] ");
-                } else if (tabla[i][j] instanceof Duque) {
+                } else if (debug[i][j] instanceof Duque) {
                     System.out.print("[d] ");
                 } else if ((i == 0 && (j == 0 || j == 1 || j == 17 || j == 18)) || (i == 1 && (j == 0 || j == 1 || j == 17 || j == 18)) || (i == 17 && (j == 0 || j == 1 || j == 17 || j == 18)) || (i == 18 && (j == 0 || j == 1 || j == 17 || j == 18))) {
                     System.out.print("[X] ");
@@ -113,6 +169,33 @@ public class Proyecto1Lab {
                 }
             }
             System.out.println("");
+        }
+    }
+
+    public static boolean ganar() {
+        boolean j1 = false;
+        if ((tabla[0][0] instanceof Rey) || (tabla[0][1] instanceof Rey) || (tabla[0][17] instanceof Rey) || (tabla[0][18] instanceof Rey) || (tabla[1][0] instanceof Rey) || (tabla[1][1] instanceof Rey) || (tabla[1][17] instanceof Rey) || (tabla[1][18] instanceof Rey) || (tabla[17][0] instanceof Rey) || (tabla[17][1] instanceof Rey) || (tabla[17][17] instanceof Rey) || (tabla[17][18] instanceof Rey) || (tabla[18][0] instanceof Rey) || (tabla[18][1] instanceof Rey) || (tabla[18][17] instanceof Rey) || (tabla[18][18] instanceof Rey)) {
+            j1 = true;
+        }
+        boolean j2 = true;
+        boolean fin = false;
+        for (int i = 0; i < tabla.length; i++) {
+            for (int j = 0; j < tabla[i].length; j++) {
+                if (tabla[i][j] instanceof Rey) {
+                    j1 = false;
+                }
+            }
+        }
+        if (j1) {
+            System.out.println(jugador1 + " haz ganado!");
+            fin = true;
+            return fin;
+        } else if (j2) {
+            System.out.println(jugador2 + " haz ganado!");
+            fin = true;
+            return fin;
+        } else {
+            return fin;
         }
     }
 }
