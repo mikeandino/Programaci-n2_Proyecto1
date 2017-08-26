@@ -23,6 +23,10 @@ public class Proyecto1Lab {
         jugador1 = sc.next();
         System.out.print("Ingrese el nommbre del jugador que controlara a los rebeldes: ");
         jugador2 = sc.next();
+        while (jugador1.equals(jugador2)) {
+            System.out.print("Ingrese un nombre diferente: ");
+            jugador2 = sc.next();
+        }
         llenar();
         turno(jugador2);
     }

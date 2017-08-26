@@ -61,7 +61,9 @@ public abstract class Pieza {
         int derecha = 0;
         index = 1;
         if (x<19) {
-            while (!(x + index <  16 && (y < 2 || y > 16)) && x+index<19) {
+            boolean l = x + index <  16 && (y < 2 || y > 16);
+            boolean j = x+index<19;
+            while (!(x + index >  16 && (y < 2 || y > 16)) && x+index<19) {
                 if(Proyecto1Lab.tabla[y][x + index] == null){
                     derecha++;
                     index++;
@@ -73,7 +75,7 @@ public abstract class Pieza {
         int abajo = 0;
         index = 1;
         if (y<19) {
-            while (!(y + index < 16 && (x < 2 || x > 16)) && y+index < 19) {
+            while (!(y + index > 16 && (x < 2 || x > 16)) && y+index < 19) {
                 if(Proyecto1Lab.tabla[y + index][x] == null){
                 abajo++;
                 index++;
@@ -129,7 +131,7 @@ public abstract class Pieza {
                     break;
                 case 2:
                     if (izquierda == 0) {
-                        System.out.println("No te mueves mover hacia izquierda.");
+                        System.out.println("No te puedes mover hacia izquierda.");
                     } else {
                         System.out.println("Ingrese el numero de espacios que desea moverte.");
                         index = Proyecto1Lab.sc.nextInt();
@@ -157,7 +159,7 @@ public abstract class Pieza {
                     break;
                 case 3:
                     if (derecha == 0) {
-                        System.out.println("No te mueves mover hacia derecha.");
+                        System.out.println("No te puedes mover hacia derecha.");
                     } else {
                         System.out.println("Ingrese el numero de espacios que desea moverte.");
                         index = Proyecto1Lab.sc.nextInt();
@@ -185,11 +187,11 @@ public abstract class Pieza {
                     break;
                 case 4:
                     if (abajo == 0) {
-                        System.out.println("No te mueves mover hacia arriba.");
+                        System.out.println("No te puedes mover hacia arriba.");
                     } else {
                         System.out.println("Ingrese el numero de espacios que desea moverte.");
                         index = Proyecto1Lab.sc.nextInt();
-                        while (index < 1 || index > arriba) {
+                        while (index < 1 || index > abajo) {
                             System.out.print("Espacio no valido: ");
                             index = Proyecto1Lab.sc.nextInt();
                         }
