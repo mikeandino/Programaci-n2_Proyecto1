@@ -15,27 +15,7 @@ public class Proyecto1Lab {
     static Pieza[][] debug = new Pieza[2][6];
 
     public static void main(String[] args) {
-        juegodebug();
-    }
-
-    public static void juegodebug() {
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                if (i == 0 && (j == 0 || j == 2 || j == 4)) {
-                    debug[i][j] = new Rebelde(i, j);
-                } else if (i == 1 && (j == 1 || j == 3 || j == 5)) {
-                    if (j == 3) {
-                        debug[i][j] = new Rey(i, j);
-                    } else {
-                        debug[i][j] = new Duque(i, j);
-                    }
-                }
-            }
-        }
-        jugador1 = "1";
-        jugador2 = "2";
-        imprimir();
-        turno(jugador2);
+        juego();
     }
 
     public static void juego() {
@@ -44,11 +24,11 @@ public class Proyecto1Lab {
         System.out.print("Ingrese el nommbre del jugador que controlara a los rebeldes: ");
         jugador2 = sc.next();
         llenar();
-        imprimir();
         turno(jugador2);
     }
 
     public static void turno(String jugador) {
+        imprimir();
         System.out.println("Es tu turno " + jugador + ".");
         System.out.print("Ingrese la cordenada x: ");
         int x = sc.nextInt() - 1;
@@ -65,20 +45,23 @@ public class Proyecto1Lab {
             }
         }
         if (jugador1.equals(jugador)) {
-            if (debug[y][x] instanceof Duque) {
-                debug[y][x].mover();
-            } else if (debug[y][x] instanceof Rey) {
-                debug[y][x].mover();
+            if (tabla[y][x] instanceof Duque) {
+                tabla[y][x].mover();
+            } else if (tabla[y][x] instanceof Rey) {
+                tabla[y][x].mover();
             } else {
                 System.out.println("Esta pieza no te pertenece");
                 turno(jugador);
             }
             jugador = jugador2;
         } else {
-            if (debug[y][x] instanceof Duque) {
-            debug[y][x].mover();
-            jugador = jugador1;
+            if (tabla[y][x] instanceof Rebelde) {
+                tabla[y][x].mover();
+                jugador = jugador1;
+            } else {
+                System.out.println("Esta pieza no te pertenece");
             }
+            turno(jugador);
         }
         if (!ganar()) {
             turno(jugador);
@@ -141,7 +124,7 @@ public class Proyecto1Lab {
 
     public static void imprimir() {
         System.out.print("   ");
-        for (int i = 0; i < debug[0].length; i++) {
+        for (int i = 0; i < tabla[0].length; i++) {
             if ((i + 1) < 10) {
                 System.out.print(" " + (i + 1) + "  ");
             } else {
@@ -149,18 +132,18 @@ public class Proyecto1Lab {
             }
         }
         System.out.println("");
-        for (int i = 0; i < debug.length; i++) {
+        for (int i = 0; i < tabla.length; i++) {
             if ((i + 1) < 10) {
                 System.out.print((i + 1) + "  ");
             } else {
                 System.out.print((i + 1) + " ");
             }
-            for (int j = 0; j < debug[i].length; j++) {
-                if (debug[i][j] instanceof Rebelde) {
+            for (int j = 0; j < tabla[i].length; j++) {
+                if (tabla[i][j] instanceof Rebelde) {
                     System.out.print("[r] ");
-                } else if (debug[i][j] instanceof Rey) {
+                } else if (tabla[i][j] instanceof Rey) {
                     System.out.print("[R] ");
-                } else if (debug[i][j] instanceof Duque) {
+                } else if (tabla[i][j] instanceof Duque) {
                     System.out.print("[d] ");
                 } else if ((i == 0 && (j == 0 || j == 1 || j == 17 || j == 18)) || (i == 1 && (j == 0 || j == 1 || j == 17 || j == 18)) || (i == 17 && (j == 0 || j == 1 || j == 17 || j == 18)) || (i == 18 && (j == 0 || j == 1 || j == 17 || j == 18))) {
                     System.out.print("[X] ");
@@ -182,7 +165,7 @@ public class Proyecto1Lab {
         for (int i = 0; i < tabla.length; i++) {
             for (int j = 0; j < tabla[i].length; j++) {
                 if (tabla[i][j] instanceof Rey) {
-                    j1 = false;
+                    j2 = false;
                 }
             }
         }
